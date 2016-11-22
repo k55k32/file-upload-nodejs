@@ -5,7 +5,7 @@ var config = require(process.argv[2] || './config')
 var app = express();
 var uuid = require('node-uuid').v4;
 
-app.post('*', function(req, res, next) {
+app.all('*', function(req, res, next) {
     res.header("Access-Control-Allow-Origin", req.headers['origin']);
     res.header("Access-Control-Allow-Credentials", true);
     res.header("Access-Control-Allow-Headers", req.headers['access-control-request-headers']);
