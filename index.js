@@ -23,7 +23,6 @@ app.get('/file/:file', function(req, res) {
 });
 
 app.post('/upload', function (req, res){
-
     var form = new multiparty.Form({uploadDir: config.uploadDir});
     form.on('error', function(err) {
         console.log('Error parsing form: ' + err.stack);
@@ -34,11 +33,13 @@ app.post('/upload', function (req, res){
             res.send({success: false, msg: err.toString()});
         } else {
             var fileDataArr = files['file'];
-            var fileData = fileDataArr[0];
-            var oldName = fileData.path;
-            var newName = uuid() + oldName.substr(oldName.lastIndexOf('.'))
-            fs.rename(oldName, config.uploadDir + newName)
-            res.send(config.downDomain + newName);
+            if (fileDataArr) {
+              var fileData = fileDataArr[0];
+              var oldName = fileData.path;
+              var newName = uuid() + oldName.substr(oldName.lastIndexOf('.'))
+              fs.rename(oldName, config.uploadDir + newName)
+              res.send(config.downDomain + newName);
+            }
         }
     });
 });
