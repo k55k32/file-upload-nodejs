@@ -51,6 +51,7 @@ app.post('/upload', function (req, res){
           res.send({success: false, msg: err.toString()})
         } else {
           var fileDataArr = files['file']
+          console.log('file-upload-request', fileDataArr)
           if (fileDataArr) {
             var fileData = fileDataArr[0]
             var oldName = fileData.path
@@ -58,6 +59,9 @@ app.post('/upload', function (req, res){
             var newName = uuid() + suffix
             fs.rename(oldName, config.uploadDir + newName)
             res.send(config.downDomain + newName)
+          } else {
+            console.log('file-upload-faild')
+            res.sendStatus(500, fileDataArr)
           }
         }
       })
